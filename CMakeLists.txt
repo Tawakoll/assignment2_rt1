@@ -11,9 +11,18 @@ find_package(rclpy REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED) # Required for custom msgs
 
+# 2. Generate the Custom Messages
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/RobotStatus.msg"
+  "srv/GetAvg.srv"        
+  "srv/GetThreshold.srv"  
+  DEPENDENCIES std_msgs sensor_msgs
+)
 install(PROGRAMS
   scripts/ui_node.py
+  scripts/laser_status.py
   DESTINATION lib/${PROJECT_NAME}
 )
 if(BUILD_TESTING)
