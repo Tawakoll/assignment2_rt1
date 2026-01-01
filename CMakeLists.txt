@@ -22,6 +22,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 )
 install(PROGRAMS
   scripts/ui_node.py
+  scripts/controller.py
   scripts/laser_status.py
   DESTINATION lib/${PROJECT_NAME}
 )
