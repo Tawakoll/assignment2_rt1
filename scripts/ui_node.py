@@ -9,6 +9,7 @@ class UserInputNode(Node):
         super().__init__('user_input_node')
         # Publish to a custom topic, NOT directly to the robot
         self.publisher_ = self.create_publisher(Twist, '/user_request', 10)
+
         self.get_logger().info('Input Node Started. Publishing to /user_request')
 
     def send_request(self, linear, angular):

@@ -13,11 +13,11 @@ find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED) # Required for custom msgs
 
-# 2. Generate the Custom Messages
+# 2. Generate the Custom Messages/Services
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/RobotStatus.msg"
   "srv/GetAvg.srv"        
-  "srv/GetThreshold.srv"  
+  "srv/SetThreshold.srv"  
   DEPENDENCIES std_msgs sensor_msgs
 )
 install(PROGRAMS
