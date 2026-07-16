@@ -22,7 +22,7 @@ class LaserStatus(Node):
         # Default safety threshold initialized in class to be used in multiple functions
         self.safety_threshold = 1.0  # meters
     def set_threshold_callback(self, request, response):
-        self.safety_threshold = request.new_trheshold
+        self.safety_threshold = request.new_threshold
         response.success = True
         self.get_logger().info(f'Threshold updated to: {self.safety_threshold}')
         return response
