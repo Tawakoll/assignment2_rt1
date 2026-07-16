@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#000"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="600" fill="#fff"/>
+
+  <!-- Title -->
+  <text x="480" y="34" text-anchor="middle" font-size="26" font-weight="bold">assignment2_rt1</text>
+  <text x="480" y="58" text-anchor="middle" font-size="12">Simple diagram representing the high-level architecture for my</text>
+  <text x="480" y="73" text-anchor="middle" font-size="12">implementation of the assignment</text>
+
+  <!-- ui_node -->
+  <rect x="20" y="150" width="210" height="150" rx="16" fill="#fff" stroke="#000"/>
+  <text x="125" y="173" text-anchor="middle" font-size="13" font-weight="bold">ui_node</text>
+  <line x1="40" y1="182" x2="210" y2="182" stroke="#000" stroke-width="0.75"/>
+  <text x="125" y="202" text-anchor="middle" font-size="11">
+    <tspan x="125" dy="0">Reads "linear angular"</tspan>
+    <tspan x="125" dy="14">from the keyboard</tspan>
+    <tspan x="125" dy="22">Publishes the requested</tspan>
+    <tspan x="125" dy="14">velocity as a Twist</tspan>
+    <tspan x="125" dy="22">Sends a stop command</tspan>
+    <tspan x="125" dy="14">(0,0) on exit</tspan>
+  </text>
+
+  <!-- laser_status -->
+  <rect x="20" y="330" width="210" height="160" rx="16" fill="#fff" stroke="#000"/>
+  <text x="125" y="353" text-anchor="middle" font-size="13" font-weight="bold">laser_status</text>
+  <line x1="40" y1="362" x2="210" y2="362" stroke="#000" stroke-width="0.75"/>
+  <text x="125" y="382" text-anchor="middle" font-size="11">
+    <tspan x="125" dy="0">Reads the laser scan and</tspan>
+    <tspan x="125" dy="14">finds the closest obstacle</tspan>
+    <tspan x="125" dy="22">Publishes distance,</tspan>
+    <tspan x="125" dy="14">direction &amp; threshold</tspan>
+    <tspan x="125" dy="22">Service server:</tspan>
+    <tspan x="125" dy="14">set_safety_threshold</tspan>
+  </text>
+
+  <!-- controller -->
+  <rect x="360" y="110" width="280" height="320" rx="16" fill="#fff" stroke="#000"/>
+  <text x="500" y="133" text-anchor="middle" font-size="13" font-weight="bold">controller</text>
+  <line x1="385" y1="142" x2="615" y2="142" stroke="#000" stroke-width="0.75"/>
+  <text x="500" y="164" text-anchor="middle" font-size="11">
+    <tspan x="500" dy="0">Subscribes to user velocity</tspan>
+    <tspan x="500" dy="14">and to robot status</tspan>
+    <tspan x="500" dy="22">Stores the last 5 user</tspan>
+    <tspan x="500" dy="14">velocity commands</tspan>
+    <tspan x="500" dy="22">If too close to an obstacle,</tspan>
+    <tspan x="500" dy="14">stops then reverses the</tspan>
+    <tspan x="500" dy="14">last command instead</tspan>
+    <tspan x="500" dy="22">Otherwise publishes the</tspan>
+    <tspan x="500" dy="14">user's requested velocity</tspan>
+    <tspan x="500" dy="22">Service server:</tspan>
+    <tspan x="500" dy="14">get_avg_service (avg of</tspan>
+    <tspan x="500" dy="14">last 5 commands)</tspan>
+  </text>
+
+  <!-- robot / simulator -->
+  <rect x="740" y="170" width="200" height="200" rx="16" fill="#fff" stroke="#000"/>
+  <text x="840" y="193" text-anchor="middle" font-size="13" font-weight="bold">robot / simulator</text>
+  <line x1="755" y1="202" x2="925" y2="202" stroke="#000" stroke-width="0.75"/>
+  <text x="840" y="224" text-anchor="middle" font-size="11">
+    <tspan x="840" dy="0">Publishes laser scan</tspan>
+    <tspan x="840" dy="14">readings</tspan>
+    <tspan x="840" dy="22">Subscribes to velocity</tspan>
+    <tspan x="840" dy="14">commands and moves</tspan>
+    <tspan x="840" dy="14">accordingly</tspan>
+  </text>
+
+  <!-- CLI -->
+  <rect x="360" y="470" width="280" height="70" rx="16" fill="#fff" stroke="#000" stroke-dasharray="4 3"/>
+  <text x="500" y="493" text-anchor="middle" font-size="13" font-weight="bold">terminal (ros2 service call)</text>
+  <line x1="380" y1="502" x2="620" y2="502" stroke="#000" stroke-width="0.75"/>
+  <text x="500" y="521" text-anchor="middle" font-size="11">Calls the two service servers</text>
+
+  <!-- ui_node -> controller -->
+  <line x1="230" y1="200" x2="356" y2="190" stroke="#000" marker-end="url(#arrow)"/>
+  <text x="293" y="180" text-anchor="middle" font-size="11">/user_request</text>
+  <text x="293" y="194" text-anchor="middle" font-size="11">(Twist)</text>
+
+  <!-- laser_status -> controller -->
+  <line x1="230" y1="400" x2="356" y2="400" stroke="#000" marker-end="url(#arrow)"/>
+  <text x="293" y="378" text-anchor="middle" font-size="11">/robot_status</text>
+  <text x="293" y="392" text-anchor="middle" font-size="11">(distance, direction, threshold)</text>
+
+  <!-- controller -> robot/simulator -->
+  <line x1="640" y1="230" x2="736" y2="230" stroke="#000" marker-end="url(#arrow)"/>
+  <text x="688" y="222" text-anchor="middle" font-size="11">/cmd_vel</text>
+  <text x="688" y="236" text-anchor="middle" font-size="11">(Twist)</text>
+
+  <!-- robot/simulator -> laser_status (loop around the bottom) -->
+  <polyline points="820,370 820,575 40,575 40,492" fill="none" stroke="#000" marker-end="url(#arrow)"/>
+  <text x="430" y="590" text-anchor="middle" font-size="11">/scan (LaserScan)</text>
+
+  <!-- CLI -> controller -->
+  <line x1="500" y1="470" x2="500" y2="432" stroke="#000" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <text x="565" y="455" text-anchor="middle" font-size="10">get_avg_service</text>
+
+  <!-- CLI -> laser_status -->
+  <polyline points="360,505 125,505 125,492" fill="none" stroke="#000" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <text x="220" y="518" text-anchor="middle" font-size="10">set_safety_threshold</text>
+</svg>
