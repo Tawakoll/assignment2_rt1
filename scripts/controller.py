@@ -6,7 +6,8 @@ from geometry_msgs.msg import Twist
 from assignment2_rt1.msg import RobotStatus
 from assignment2_rt1.srv import GetAvg
 from collections import deque #  for storing the last 5 velocity commands
-import sys
+from geometry_msgs.msg import Odometry
+
 
 class Controller(Node):
     def __init__(self):
@@ -20,6 +21,8 @@ class Controller(Node):
        
         # 3. Subscriber to User Input commands
         self.create_subscription(Twist, '/user_request', self.process_user_request, 10)
+        self.create_subscription(Odometry, '/set_point', self.process_set_point, 10)
+        self.create_subscription(Odometry, '/odom', self.process_odom, 10)
 
         #4. server to GetAvg service
         self.avg_server = self.create_service(GetAvg, 'get_avg_service', self.get_avg_callback)
@@ -38,7 +41,20 @@ class Controller(Node):
         self.linear = 0.0
         self.angular = 0.0
 
+        self.xCurrent = 0.0
+        self.yCurrent = 0.0
+        self.xTarget = 5.5
+        self.yTarget = 5.5
+
         self.get_logger().info('Controller node started. Waiting for input...')
+    
+    def process_set_point(self, msg):
+        self.xTarget = msg.pose.pose.position.x
+        self.yTarget = msg.pose.pose.position.y
+
+    def process_odom(self, msg):
+        self.xCurrent = msg.pose.pose.position.x
+        self.yCurrent = msg.pose.pose.position.y
 
     def process_robot_status(self, msg):
         #uses distance reading from laser_status node published to /robot_status then controlls robot accordingly

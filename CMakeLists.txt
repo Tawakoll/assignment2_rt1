@@ -18,6 +18,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/RobotStatus.msg"
   "srv/GetAvg.srv"        
   "srv/SetThreshold.srv"  
+  "srv/SetPoint.srv"  
   DEPENDENCIES std_msgs sensor_msgs
 )
 install(PROGRAMS

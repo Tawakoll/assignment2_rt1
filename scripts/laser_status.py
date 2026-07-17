@@ -4,7 +4,10 @@ from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from assignment2_rt1.msg import RobotStatus
 from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Odometry
+
 from assignment2_rt1.srv import SetThreshold
+from assignment2_rt1.srv import SetPoint
 
 class LaserStatus(Node):
 
@@ -17,16 +20,32 @@ class LaserStatus(Node):
     
         # Create the Service Server to set safety threshold
         self.setThresholdService = self.create_service(SetThreshold, 'set_safety_threshold', self.set_threshold_callback)
-        
+        self.setPointService = self.create_service(SetPoint, 'set_point', self.set_point_callback)
+        self.odom_publisher_ = self.create_publisher(Odometry, '/set_point', 10)
+
         self.get_logger().info('Laser Status node started. Service /set_safety_threshold ready.')        
         # Default safety threshold initialized in class to be used in multiple functions
         self.safety_threshold = 1.0  # meters
+        self.x=5.5
+        self.y=5.5
+    
     def set_threshold_callback(self, request, response):
         self.safety_threshold = request.new_threshold
         response.success = True
         self.get_logger().info(f'Threshold updated to: {self.safety_threshold}')
         return response
-
+    
+    def set_point_callback(self, request, response):
+        self.x = request.x
+        self.y = request.y
+        response.success = True
+        self.get_logger().info(f'x: {self.x}, y: {self.y}')
+        odom_msg = Odometry()
+        odom_msg.pose.pose.position.x = self.x
+        odom_msg.pose.pose.position.y = self.y
+        self.odom_publisher_.publish(odom_msg)
+        return response
+   
     def process_scan(self, msg):
         ranges = msg.ranges
         length = len(ranges)
